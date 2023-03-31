@@ -120,7 +120,7 @@ batch_size_per_gpu = 4
 gpus = 1
 logger_freq = 300
 learning_rate = 1e-5
-sd_locked = True
+sd_locked = False
 only_mid_control = False
 
 if __name__ == "__main__":
