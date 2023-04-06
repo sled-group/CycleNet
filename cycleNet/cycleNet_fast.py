@@ -50,7 +50,6 @@ class CycleLDM(LatentDiffusion):
                  recon_weight,
                  disc_weight,
                  disc_mode,
-                 consis_weight,
                  only_mid_control,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -60,7 +59,6 @@ class CycleLDM(LatentDiffusion):
         self.only_mid_control = only_mid_control
         self.disc_weight = disc_weight
         self.disc_mode = disc_mode
-        self.consis_weight = consis_weight
         
     @torch.no_grad()
     def get_input(self, batch, k, bs=None, *args, **kwargs):
@@ -237,9 +235,7 @@ class CycleLDM(LatentDiffusion):
         y_cond = (self.decode_first_stage(y_prime.detach()) + 1.0) / 2.0
         y2y = dict(c_crossattn=[cond_txt], uc_crossattn=[cond_txt], c_concat=[y_cond])
         noise_xy = self.apply_model(x_noise, t, y2y)
-        y_start  = self.predict_start_from_noise(x_noise, t, noise_xy)
-        noise_yx = self.apply_model(y_noise, t, x2x)
-        x_prime  = self.predict_start_from_noise(y_noise, t, noise_yx)
+        y_start  = self.predict_start_from_noise(x_noise, t, noise_xy)        
         
         loss_dict = {}
         prefix = 'train' if self.training else 'val'
@@ -256,18 +252,12 @@ class CycleLDM(LatentDiffusion):
         if self.disc_mode == "x0":
             disc_output = y_prime
             disc_target = y_start
-            consis_output = x_prime
-            cycle_output = x_prime_c
-            c_target = x_start
         elif self.disc_mode == "eps":
             disc_output = noise_xy_prime
             disc_target = noise_xy
-            consis_output = noise_xy_prime.detach() + noise_yx
-            c_target = noise_x + noise_y
         disc_target = disc_target.detach()
             
         loss_simple = self.recon_weight * self.get_loss(recon_x_output, recon_x_target, mean=False).mean([1, 2, 3]) + \
-                      self.consis_weight* self.get_loss(consis_output, c_target, mean=False).mean([1, 2, 3]) + \
                       self.disc_weight  * self.get_loss(disc_output, disc_target, mean=False).mean([1, 2, 3])
         
         loss_dict.update({f'{prefix}/loss_simple': loss_simple.mean()})
@@ -282,7 +272,6 @@ class CycleLDM(LatentDiffusion):
         loss = self.l_simple_weight * loss.mean()
 
         loss_vlb = self.recon_weight * self.get_loss(recon_x_output, recon_x_target, mean=False).mean(dim=(1, 2, 3)) + \
-                   self.consis_weight* self.get_loss(consis_output, c_target, mean=False).mean(dim=(1, 2, 3)) + \
                    self.disc_weight  * self.get_loss(disc_output, disc_target, mean=False).mean(dim=(1, 2, 3))
         
         loss_vlb = (self.lvlb_weights[t] * loss_vlb).mean()
