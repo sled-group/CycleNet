@@ -20,7 +20,6 @@ model:
     recon_weight: 1
     disc_weight: 0.1
     disc_mode: eps
-    consis_weight: 0.1
 
     control_stage_config:
       target: cldm.cldm.ControlNet
