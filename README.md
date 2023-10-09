@@ -20,6 +20,16 @@ conda activate cycle
 ## References
 
 ```
+@inproceedings{ma-etal-2023-cyclenet,
+    title = "CycleNet: Rethinking Cycle Consistent in Text‑Guided Diffusion for Image Manipulation",
+    author = "Xu, Sihan  and
+      Ma, Ziqiao  and
+      Huang, Yidong  and
+      Lee, Honglak  and
+      Chai, Joyce",
+    booktitle = "Advances in Neural Information Processing Systems",
+    year = "2023",
+}
 ```
 
 This implementation is based on [ControlNet](https://github.com/lllyasviel/ControlNet).
