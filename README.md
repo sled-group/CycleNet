@@ -20,7 +20,7 @@ conda activate cycle
 ## References
 
 ```
-@inproceedings{ma-etal-2023-cyclenet,
+@inproceedings{cyclenet,
     title = "CycleNet: Rethinking Cycle Consistent in Text‑Guided Diffusion for Image Manipulation",
     author = "Xu, Sihan  and
       Ma, Ziqiao  and
