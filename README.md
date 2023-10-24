@@ -8,7 +8,7 @@ Sihan Xu*, Ziqiao Ma*, Yidong Huang, Honglak Lee, Joyce Chai
 University of Michigan, LG AI Research  
 [NeurIPS 2023](https://neurips.cc/virtual/2023/poster/69913)
 
-### [Project Page](https://cyclenetweb.github.io) | [Paper](http://arxiv.org/abs/2310.13165) | [ManiCups Dataset](https://huggingface.co/datasets/sled-umich/ManiCups)
+### [Project Page](https://cyclenetweb.github.io) | [Paper](http://arxiv.org/abs/2310.13165) | [ManiCups Dataset](https://huggingface.co/datasets/sled-umich/ManiCups) | [Models](https://huggingface.co/sled-umich/CycleNet)
 
 ## Conda Environment
 
